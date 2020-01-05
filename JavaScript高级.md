@@ -126,9 +126,9 @@
 
 
 
-# 原型指向改变如何添加原型方法
+# 原型指向改变(原型继承)后，如何添加原型方法
 
-1.如果原型指向改变了，那么就应该在原型指向改变之后添加原型方法
+如果原型指向改变了，那么就应该在原型指向改变之后添加原型方法
 
 ```javascript
     function Person(age){
@@ -183,35 +183,6 @@
 # 组合继承：原型继承+借用构造函数继承
 
 解决了父级类别中的方法不能继承的问题
-
-<script>
-    function Person(name,age,sex){
-        this.name = name;
-        this.age = age;
-        this.sex = sex;
-    }
-    Person.prototype.sayHi = function(){
-        console.log('你好呀')
-    }
-    function Student(name,age,sex,scroe){
-        //借用构造函数继承
-        Person.call(this,name,age,sex)
-        this.scroe = scroe
-    }
-    //改变原型指向----->继承
-    Student.prototype = new Person()
-    Student.prototype.study = function (){
-        console.log('我爱学习')
-    }
-    let stu1 = new Student('张三',15,'男',99)
-	let stu2 = new Student('李四',16,'女',69)
-	console.log(stu1.name,stu1.age,stu1.sex,stu1.scroe)
-    stu1.sayHi()
-    stu1.study()
-	console.log(stu2.name,stu2.age,stu2.sex,stu2.scroe)
-    stu2.sayHi()
-    stu2.study()
-</script>
 
 ```javascript
     function Person(name,age,sex){
