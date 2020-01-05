@@ -18,7 +18,7 @@
 
 原型的作用之一：数据共享
 
-<script>
+```javascript
     function Student(name,age,sex){
         this.name = name;
         this.age = age;
@@ -28,11 +28,11 @@
     Student.prototype.print = function (){
         console.log(`名字:${this.name}，年龄：${this.age}，性别：${this.sex}，就读于${Student.prototype.school}`)
 }
-let stu = new Student("张三",20,"男")
-let stu2 = new Student("尼古拉斯赵四",44,"男")
-stu.print()
-stu2.print()
-</script>
+	let stu = new Student("张三",20,"男")
+	let stu2 = new Student("尼古拉斯赵四",44,"男")
+	stu.print()
+	stu2.print()
+```
 
 
 
@@ -47,7 +47,7 @@ stu2.print()
 
 # 简单的原型写法
 
-<script>
+```javascript
     function Student (name,age,sex){
         this.name = name;
         this.age = age;
@@ -62,7 +62,7 @@ stu2.print()
             }
         }
     }
-</script>
+```
 
 
 
@@ -76,7 +76,7 @@ stu2.print()
 
 
 
-<script>
+```javascript
     function Student(name,age){
         this.name  = name;
         this.age = age;
@@ -84,7 +84,7 @@ stu2.print()
     Student.prototype.name = "张三"
     let stu = new Stufent("李四",20)
 	console.log(stu.name)
-</script>
+```
 
 
 
@@ -130,7 +130,7 @@ stu2.print()
 
 1.如果原型指向改变了，那么就应该在原型指向改变之后添加原型方法
 
-<script>
+```javascript
     function Person(age){
         this.age = age;
     }
@@ -146,7 +146,7 @@ stu2.print()
     }
     let per = new Person(15)
 	per.sayHi()
-</script>
+```
 
 
 
@@ -158,7 +158,7 @@ stu2.print()
 
 缺陷：父级类别中的方法不能继承
 
-<script>
+```javascript
     function Person(name,age,sex){
         this.name = name;
         this.age = age;
@@ -174,7 +174,7 @@ stu2.print()
     }
     let stu1 = new Student('张三',39,'男',89)
 	let stu2 = new Student('李四',29,'男',73)
-</script>
+```
 
 
 
@@ -213,6 +213,35 @@ stu2.print()
     stu2.study()
 </script>
 
+```javascript
+    function Person(name,age,sex){
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+    }
+    Person.prototype.sayHi = function(){
+        console.log('你好呀')
+    }
+    function Student(name,age,sex,scroe){
+        //借用构造函数继承
+        Person.call(this,name,age,sex)
+        this.scroe = scroe
+    }
+    //改变原型指向----->继承
+    Student.prototype = new Person()
+    Student.prototype.study = function (){
+        console.log('我爱学习')
+    }
+    let stu1 = new Student('张三',15,'男',99)
+	let stu2 = new Student('李四',16,'女',69)
+	console.log(stu1.name,stu1.age,stu1.sex,stu1.scroe)
+    stu1.sayHi()
+    stu1.study()
+	console.log(stu2.name,stu2.age,stu2.sex,stu2.scroe)
+    stu2.sayHi()
+    stu2.study()
+```
+
 
 
 
@@ -223,26 +252,27 @@ stu2.print()
 
 方式一：
 
-<script>
+```javascript
    let obj1 = {
        name:'张三',
        age:20,
        sex:'男'
    }
-      let obj2={}
+   let obj2={}
    for(let key in obj1){
        obj2[key] = obj1[key]
    }   
 
-console.log(boj2.name)
-</script>
+	console.log(boj2.name)
+```
+
 
 
 
 
 方式二：
 
-<script>
+```javascript
     function Person (){
         
     }
@@ -259,7 +289,8 @@ console.log(boj2.name)
     	obj[key] = Person.prototype[key]
 	}
 	console.dir(obj)
-</script>
+```
+
 
 
 
@@ -270,7 +301,7 @@ console.log(boj2.name)
 
 ![1578207543709](C:\Users\HUAWEI\AppData\Roaming\Typora\typora-user-images\1578207543709.png)
 
-<script>
+```javascript
     let obj1 = {
         age:10,
         name:'张三',
@@ -292,7 +323,7 @@ console.log(boj2.name)
     
     extend(obj1,obj2)
     console.dir(obj2)
-</script>
+```
 
 
 
@@ -302,7 +333,7 @@ console.log(boj2.name)
 
 拷贝还是复制，深：把一个对象中的所有属性或者方法，一个一个的找到，并且在另一个对象中开辟相应的空间，一个一个的存储到另一个对象中
 
-<script>
+```javascript
     let obj1 = {
         name:'张三',
         age:20,
@@ -336,7 +367,9 @@ console.log(boj2.name)
             }
         }
     }
-</script>
+```
+
+
 
 
 
@@ -344,39 +377,39 @@ console.log(boj2.name)
 
 1.普通函数中的this的指向 ---> window
 
-<script>
+```javascript
     function f1(){
         console.log(this)
     }
     f1()//window
-</script>
+```
 
 
 
 2.构造函数中的this ---> 实例对象
 
-<script>
+```javascript
      function Person() {
         console.log(this)
     }
     let per = new Person()//Person{}
-</script>
+```
 
 
 
 3.定时器中的this ---> window
 
-<script>
+```javascript
     setTiemout(function (){
         console.log(this)
     },100) //window
-</script>
+```
 
 
 
 4. 对象.方法中的this ---> 当前实例对象
 
-<script>
+```javascript
     function Person(){
         this.eat = function(){
             console.log(this)
@@ -384,13 +417,13 @@ console.log(boj2.name)
     }
     let per = new Person()
     per.eat()//当前实例对象
-</script>
+```
 
 
 
 5.原型对象方法中的this ---> 当前实例对象
 
-<script>
+```javascript
     function Person(){
         
     }
@@ -400,7 +433,5 @@ console.log(boj2.name)
     
     let per = new Person()
     per.eat()//当前实例对象
-</script>
-
-
+```
 
