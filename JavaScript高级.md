@@ -406,3 +406,132 @@
     per.eat()//当前实例对象
 ```
 
+
+
+
+
+# apply和call方法
+
+作用：都可以改变this的指向
+
+区别：apply(this(需要执行该方法的对象)，[参数])  参数为数组
+
+​			call(this(需要执行该方法的对象)，参数1，参数2，...)  参数为多个值
+
+用途：当某个对象需要执行它自己本身没有的方法时，可以通过目标对象调用这个方法并使用apply或call方法改变this的指向
+
+
+
+1. apply和call方法如果没有传入参数，或者传入的是null，那么调用该方法的对象的this就是默认的window
+
+```javascript
+function f1(x,y){
+	console.log(`结果是${x+y},this的指向为${this}`)
+}
+//apply和call方法如果没有传入参数，或者传入的是null，那么调用该方法的对象的this就是默认的window
+f1.apply(null,[10,20])
+f1.call(null,10,20)
+
+```
+
+
+
+2. apply和call都可以改变this的指向
+
+```javascript
+function f1(x,y){
+	console.log(`结果是${x+y},this的指向为${this}`)
+}
+
+//创建一个obj对象
+let obj = {
+	name:'张三',
+	age:19
+}
+
+//通过apply或者call改变this指向,使得obj能够调用原本不属于自己的方法
+f1.apply(obj,[10,20])
+f1.call(obj,10,30)
+```
+
+
+
+3.将伪数组（类数组）转换为标准数组
+
+伪数组：它无法直接调用数组方法或期望length属性有什么特殊的行为，但仍可以对真正数组遍历方法来遍历它们。典型的是函数的argument参数，还有像调用getElementsByTagName，document.childNodes之类的,它们都返回NodeList对象，都属于伪数组。
+
+```javascript
+function fn1(){
+	//为了使用数组方法，将arguments转化成真正的数组
+	let args = Array.prototype.slice.call(arguments)
+	
+	args.forEach(item => {
+		console.log(item)//根据传入的实参个数，遍历并打印
+	})
+}
+fn1(1,2,3,4)
+
+```
+
+
+
+
+
+4. apply和call方法到底是谁的?
+
+   apply和call方法实际上并不在函数这个实例对象中，而是在Function的prototype中
+
+   ```javascript
+   function f1(){
+   	console.log(this)
+   }
+   //f1是函数，也是对象
+   console.dir(f1)
+   //对象调用方法，说明该对象有这个方法
+   f1.apply()
+   f1.call()
+   //说明所有函数都是Function的实例对象
+   console.log(f1.__proto__==Function.prototype) //true
+   ```
+
+   
+
+
+
+# bind方法
+
+apply和call方法是调用的时候改变this指向
+
+bind方法是复制的时候改变this指向
+
+```javascript
+function f1(x,y){
+    console.log((x+y)+'====>'+this)
+}
+//bind相当于把该函数或方法复制了一份，同时改变this的指向，当第一个参数为空或null时，this指向默认为window
+//参数可以在复制的时候传进去，也可以复制之后调用的时候传进去
+let ff = f1.bind(null)
+ff(10,20) //30 ====> window
+```
+
+
+
+```javascript
+function Person(age){
+	this.age = age
+}
+Person.prototype.play = function(){
+    console.log(this+'=====>'+this.age)
+}
+
+function Student(age){
+    this.age = age
+}
+
+let per = new Person(20)
+let stu = new Person(40)
+//复制了这个方法，并将this指向了stu实例对象
+let ff = per.play.bind(stu)
+ff() //Student实例对象 =====> 40
+```
+
